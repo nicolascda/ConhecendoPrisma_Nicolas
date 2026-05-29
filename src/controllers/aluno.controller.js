@@ -48,6 +48,30 @@ const listar = async (req, res) => {
 
 };
 
+const listarPorId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id || !Number(id)) {
+            return res.status(400).json("O valor do ID precisa existir, e necessita ser um número")
+        }
+
+        const aluno = await prisma.aluno.findUnique({
+            where: {
+                id: Number(id)
+            }
+        });
+
+        if ( !aluno) {
+            return res.status(404).json("Aluno não encontrado");
+        }
+        res.status(200).json(aluno).end();
+    } catch (error) {
+        res.status(500).json("Erro de servidor");
+        throw error
+    }
+}
+
 const atualizar = async (req, res) => {
     try {
 
@@ -128,6 +152,7 @@ const deletar = async (req, res) => {
 module.exports = {
     cadastrar,
     listar,
+    listarPorId,
     atualizar,
     deletar
 };

@@ -38,6 +38,30 @@ const listar = async (req, res) => {
 
 };
 
+const listarPorId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id || !Number(id)) {
+            return res.status(400).json("O valor do ID precisa existir, e necessita ser um número")
+        }
+
+        const escola = await prisma.escola.findUnique({
+            where: {
+                id: Number(id)
+            }
+        });
+
+        if (escola) {
+            return res.status(404).json("Escola não encontrada");
+        }
+        res.status(200).json(escola).end();
+    } catch (error) {
+        res.status(500).json("Erro de servidor");
+        throw error
+    }
+}
+
 const atualizar = async (req, res) => {
     try {
 
@@ -100,7 +124,7 @@ const deletar = async (req, res) => {
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') {
             return res.status(400).json({ error: "Não é possível deletar o valor da escola, pois está sendo utilizado em outro lugar, então delete o lugar que está sendo usado o valor primeiro, para depois deletar esse dado" });
         }
-        
+
         res.status(500).json("Erro de servidor");
         throw error
     }
@@ -109,6 +133,7 @@ const deletar = async (req, res) => {
 module.exports = {
     cadastrar,
     listar,
+    listarPorId,
     atualizar,
     deletar
 };
