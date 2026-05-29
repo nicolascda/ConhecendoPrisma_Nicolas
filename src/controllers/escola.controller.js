@@ -52,7 +52,7 @@ const listarPorId = async (req, res) => {
             }
         });
 
-        if (escola) {
+        if (!escola) {
             return res.status(404).json("Escola não encontrada");
         }
         res.status(200).json(escola).end();

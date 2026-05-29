@@ -5,7 +5,7 @@ const { cadastrar, listar, listarPorId, atualizar, deletar} = require( "../contr
 
 router.post('/cadastrar', cadastrar);
 router.get('/listar', listar);
-router.get('/listar/:id', listarPorId),
+router.get('/listar/:id', listarPorId);
 router.put('/atualizar/:id', atualizar);
 router.delete('/deletar/:id', deletar);
 
